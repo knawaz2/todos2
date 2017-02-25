@@ -1,0 +1,48 @@
+<section class="todoapp">
+	<header>
+		<h1> Todo App </h1>
+		<input class="new-todo" placeholder="Whats you are planning to do ?" [(ngModel)]="newTodo" (keyup.enter)="addTodo()" autofocus>
+	</header>
+
+	<!-- Following section should be hidden and shown only if there are Todo tasks -->
+	<section class="main">
+		<label for="toggle-all"> Mark all as complete </label> 
+		<input id="toggle-all" class="toggle-all" type="checkbox">
+
+
+		<ul class="todo-list">
+			<li *ngFor="let todo of todos" [ngClass]="{completed: todo.isDone, editing:todo.editing}">
+				<div class="view">
+					<input class="toggle" type="checkbox" class="toggle" [checked]="todo.isDone">
+					<label (dblclick)="todo.editing = true"> {{todo.title}}</label>
+					<button class="destroy" (click) = "destroyTodo(todo)"></button>
+				</div>
+				<input class="edit" value="{{todo.title}}" 
+				#updatedTodo
+					[value]="todo.title" (blur)="updateTodo(todo, updatedTodo.value)"
+					(keyup.escape) = "todo.editing = false" (keyup.enter) = "updateTodo(todo, updatedTodo.value)">
+			</li>
+		</ul>
+	</section>
+
+
+
+	<!-- Following section should be displayed only if there are todo items -->
+	<footer class="footer">
+		<span class="todo-count"> <strong>{{activeTasks}}</strong> items left </span>
+
+		<ul class="filters">
+			<li>
+				<a [class.selected]="path === 'all'" [routerLink]="['/all']" > All </a>
+			</li>
+			<li>
+				<a [class.selected]="path === 'active'" [routerLink]="['/active']"> Active </a>
+			</li>
+			<li>
+				<a [class.selected]="path === 'completed'" [routerLink]="['/completed']"> Completed </a>
+			</li>
+		</ul>
+		
+		<button class="clear-completed" (click)="clearCompleted()" > Clear Completed </button>
+	</footer>
+</section>
